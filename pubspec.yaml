@@ -1,0 +1,60 @@
+name: flemini
+description: A new Flutter project.
+
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.2 <4.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  
+  
+  cupertino_icons: ^1.0.2
+  flutter_svg: ^2.0.7
+  get: ^4.6.6
+  http: ^1.1.0
+  image_picker: 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^3.0.1
+  icons_launcher: ^2.1.7
+  
+
+
+
+flutter:
+
+  
+  uses-material-design: true
+
+  
+  assets:
+    - assets/
+ 
+  
+  fonts:
+    - family: Sixtyfour
+      fonts:
+        - asset: assets/Sixtyfour-Regular.ttf
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

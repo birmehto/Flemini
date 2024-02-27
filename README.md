@@ -23,7 +23,7 @@ Follow these steps to get Flemini up and running on your local machine:
 
 1. **Clone the Repository:**
    ```bash
-   https://github.com/birmehto/Flemini.git
+  git clone https://github.com/birmehto/Flemini.git
 
    cd flemini
 

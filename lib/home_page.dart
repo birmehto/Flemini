@@ -54,11 +54,6 @@ class _HomePageState extends State<HomePage> {
                 size: 32,
                 color: Colors.deepPurpleAccent,
               )),
-          IconButton(
-              onPressed: () {
-                controller.stopResponse();
-              },
-              icon: const Icon(Icons.cancel))
         ],
       ),
       body: Padding(

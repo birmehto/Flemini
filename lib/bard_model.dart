@@ -4,19 +4,27 @@ class Bardmodel {
 
   Bardmodel({this.system, this.message});
 
-  Bardmodel.fromJson(Map<String, dynamic> json) {
-    if (json["system"] is String) {
-      system = json["system"];
-    }
-    if (json["message"] is String) {
-      message = json["message"];
-    }
+  factory Bardmodel.fromJson(Map<String, dynamic> json) {
+    return Bardmodel(
+      system: json['role'],
+      message: json['parts'][0]['text'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["system"] = system;
-    data["message"] = message;
-    return data;
+    return {
+      'system': system,
+      'message': message,
+    };
   }
 }
+
+// Example usage:
+// void main() {
+//   String responseJson = '{"role": "model", "parts": [{"text": "Hello"}]}';
+//   Map<String, dynamic> jsonResponse = jsonDecode(responseJson);
+  
+//   Bardmodel model = Bardmodel.fromJson(jsonResponse);
+//   print(model.system); // Output: model
+//   print(model.message); // Output: Hello
+// }

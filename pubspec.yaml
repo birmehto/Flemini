@@ -21,7 +21,6 @@ dependencies:
   flutter_svg: ^2.0.7
   get: ^4.6.6
   http: ^1.1.0
-  image_picker: 
 
 dev_dependencies:
   flutter_test:

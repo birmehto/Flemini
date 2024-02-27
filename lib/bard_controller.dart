@@ -6,37 +6,71 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class BardAIController extends GetxController {
-  RxList historyList = RxList<Bardmodel>([
-    // Bardmodel(system: "user", message: "Hi !"),
-    // Bardmodel(system: "bard", message: "Hello! How can I assist you today?"),
-  ]);
+  RxList<Bardmodel> historyList = RxList<Bardmodel>([]);
 
   RxBool isLoading = false.obs;
-  void sendPrompt(String prompt) async {
+  bool shouldProcessResponse = true;
+
+  Future<void> sendPrompt(String prompt) async {
     isLoading.value = true;
-    var newHistory = Bardmodel(system: "user", message: prompt);
-    historyList.add(newHistory);
+    historyList.add(Bardmodel(system: "user", message: prompt));
+
     final body = {
-      'prompt': {
-        'text': prompt,
+      'contents': [
+        {
+          'role': 'user',
+          'parts': [
+            {'text': prompt}
+          ]
+        }
+      ],
+      'generationConfig': {
+        "temperature": 0.9,
+        "topK": 1,
+        "topP": 1,
+        "maxOutputTokens": 2048,
+        "stopSequences": []
       },
+      'safetySettings': [
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "threshold": "BLOCK_ONLY_HIGH"
+        }
+      ],
     };
 
-    final request = await http.post(
-      Uri.parse(
-          'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=$apiKey'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(body),
-    );
+    final response = await http.post(
+        Uri.parse(
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=$apiKey'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body));
+    if (!shouldProcessResponse) {
+      isLoading.value = false;
+      return;
+    }
 
-    final response = jsonDecode(request.body);
-    final bardReplay = response["candidates"][0]["output"];
-    var newHistory2 = Bardmodel(system: "bard", message: bardReplay);
-    historyList.add(newHistory2);
+    final responseData = jsonDecode(response.body);
+    final bardReply =
+        responseData["candidates"][0]["content"]["parts"][0]["text"];
 
+    historyList.add(Bardmodel(system: "model", message: bardReply));
     isLoading.value = false;
+  }
+
+  void stopResponse() {
+    shouldProcessResponse = false;
   }
 
   void clearChatHistory() {

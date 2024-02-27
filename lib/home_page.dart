@@ -53,7 +53,12 @@ class _HomePageState extends State<HomePage> {
                 Icons.delete_sweep_outlined,
                 size: 32,
                 color: Colors.deepPurpleAccent,
-              ))
+              )),
+          IconButton(
+              onPressed: () {
+                controller.stopResponse();
+              },
+              icon: const Icon(Icons.cancel))
         ],
       ),
       body: Padding(
@@ -117,7 +122,9 @@ class _HomePageState extends State<HomePage> {
                                       const SizedBox(width: 10),
                                       Flexible(
                                           child: Text(
-                                        e.message.replaceAll('**', ''),
+                                        e.message
+                                            .toString()
+                                            .replaceAll('**', ''),
                                         style: const TextStyle(
                                           fontSize: 16,
                                           letterSpacing: 1.0,
@@ -161,17 +168,32 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Obx(
                     () => controller.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor:
-                                  Color.fromARGB(255, 237, 186, 247),
+                        ? GestureDetector(
+                            onTap: () {
+                              controller.stopResponse();
+                            },
+                            child: const Center(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 237, 186, 247),
+                                  ),
+                                  Icon(
+                                    Icons.stop_rounded,
+                                    size: 30,
+                                    color: Color.fromARGB(255, 151, 93, 252),
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         : IconButton(
                             onPressed: () async {
                               final text = textField.text;
 
-                              if (textField.text != "") {
+                              if (text.isNotEmpty) {
                                 controller.sendPrompt(text);
                                 textField.clear();
                               }
@@ -185,7 +207,8 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.white,
                                 ),
                               ),
-                            )),
+                            ),
+                          ),
                   ),
                   const SizedBox(width: 5)
                 ]),

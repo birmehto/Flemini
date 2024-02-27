@@ -25,8 +25,8 @@ Follow these steps to get Flemini up and running on your local machine:
    ```bash
   git clone https://github.com/birmehto/Flemini.git
 
-   cd flemini
+   cd Flemini
 
-   Flutter run
+   flutter run
    
 

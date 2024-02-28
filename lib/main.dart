@@ -1,4 +1,4 @@
-import 'package:flemini/home_page.dart';
+import 'package:flemini/ai_bot.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const AiBot(),
     );
   }
 }

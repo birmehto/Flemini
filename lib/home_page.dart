@@ -1,10 +1,12 @@
 import 'package:flemini/bard_controller.dart';
+import 'package:flemini/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String? type;
+  const HomePage({super.key, this.type});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,9 +19,9 @@ class _HomePageState extends State<HomePage> {
     TextEditingController textField = TextEditingController();
 
     //Image Picker function to get image from gallery
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 220, 214, 255),
+      drawer: const Mydrawer(),
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -27,13 +29,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: SvgPicture.asset(
-            "assets/bard_logo.svg",
-            width: 10,
-          ),
-        ),
         title: const Text(
           "Flemini",
           style: TextStyle(
@@ -79,7 +74,9 @@ class _HomePageState extends State<HomePage> {
                           child: TextButton(
                             onPressed: () {
                               controller.sendPrompt(
-                                  " How can i be a best software developer");
+                                  prompt:
+                                      " How can i be a best software developer",
+                                  text: '');
                             },
                             child: const Text(
                                 "😍 How can i be a best software developer"),
@@ -189,7 +186,8 @@ class _HomePageState extends State<HomePage> {
                               final text = textField.text;
 
                               if (text.isNotEmpty) {
-                                controller.sendPrompt(text);
+                                controller.sendPrompt(
+                                    prompt: widget.type, text: text);
                                 textField.clear();
                               }
                             },
